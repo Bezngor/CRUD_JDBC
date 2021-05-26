@@ -11,6 +11,7 @@ import java.util.List;
 
 public class JavaIOSkillRepositoryImpl implements SkillRepository {
     DBWorker worker;
+    String query = null;
     Statement statement = null;
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
@@ -24,7 +25,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
     @Override
     public List<Skill> getAll() {
         List<Skill> skills = new ArrayList<>();
-        String query = "select * from skills";
+        query = "select * from skills";
 
         try {
             statement = worker.getConnection().createStatement();
@@ -44,7 +45,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
     @Override
     public Skill getById(Integer id) {
         Skill result = null;
-        String query = "select id, name from skills where id = ?";
+        query = "select id, name from skills where id = ?";
 
         try {
             preparedStatement = worker.getConnection().prepareStatement(query);
@@ -64,7 +65,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
 
     @Override
     public Skill save(Skill skill) {
-        String query = "insert into skills(name) values(?)";
+        query = "insert into skills(name) values(?)";
         try {
             preparedStatement = worker.getConnection().prepareStatement(query);
             preparedStatement.setString(1, skill.getName());
@@ -77,11 +78,28 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
 
     @Override
     public Skill update(Skill skill) {
-        return null;
+        query = "update skills set name = ? where id = ?";
+        try {
+            preparedStatement = worker.getConnection().prepareStatement(query);
+            preparedStatement.setString(1, skill.getName());
+            preparedStatement.setInt(2, skill.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return skill;
     }
 
     @Override
-    public void deleteById(Integer integer) {
-
+    public void deleteById(Integer id) {
+        query = "delete from skills where id = ?";
+        try {
+            preparedStatement = worker.getConnection().prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
