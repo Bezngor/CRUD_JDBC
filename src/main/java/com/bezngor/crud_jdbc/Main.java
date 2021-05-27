@@ -1,6 +1,7 @@
 package com.bezngor.crud_jdbc;
 
 import com.bezngor.crud_jdbc.repository.DBWorker;
+import com.bezngor.crud_jdbc.view.DeveloperView;
 import com.bezngor.crud_jdbc.view.SkillView;
 
 import java.util.Scanner;
@@ -8,7 +9,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         SkillView skillView = new SkillView();
-        //DeveloperView devView = new DeveloperView();
+        DeveloperView devView = new DeveloperView();
         //TeamView teamView = new TeamView();
 
         System.out.println("Выберите тип операции:\n1 - Операции с Skill\n" +
@@ -25,7 +26,7 @@ public class Main {
                     skillView.skillViewStart();
                     break;
                 case "2":
-                    //devView.devViewStart();
+                    devView.devViewStart();
                     break;
                 case "3":
                     //teamView.teamViewStart();

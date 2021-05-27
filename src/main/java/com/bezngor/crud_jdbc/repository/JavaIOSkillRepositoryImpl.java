@@ -11,7 +11,6 @@ import java.util.List;
 
 public class JavaIOSkillRepositoryImpl implements SkillRepository {
     static final String SQL_GET_ALL = "select * from skills";
-    static final String SQL_GET_BY_ID = "select id, name from skills where id = ?";
     static final String SQL_SAVE = "insert into skills(name) values(?)";
     static final String SQL_UPDATE = "update skills set name = ? where id = ?";
     static final String SQL_DELETE_BY_ID = "delete from skills where id = ?";
@@ -40,22 +39,14 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
 
     @Override
     public Skill getById(Integer id) {
-        String name;
         Skill result = null;
 
-        try (PreparedStatement preparedStatement = worker.getConnection().prepareStatement(SQL_GET_BY_ID);
-             ResultSet resultSet = preparedStatement.executeQuery();
-        ) {
-            preparedStatement.setInt(1, id);
-
-            while (resultSet.next()) {
-                id = resultSet.getInt("id");
-                name = resultSet.getString("name");
-                result = new Skill(id, name);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        List<Skill> skills = this.getAll();
+        for (Skill s : skills) {
+            if (s.getId() == id)
+                result = s;
         }
+
         return result;
     }
 

@@ -9,6 +9,10 @@ import java.util.List;
 public class SkillController {
     private SkillRepository skillRepo = new JavaIOSkillRepositoryImpl();
 
+    public SkillRepository getSkillRepo() {
+        return skillRepo;
+    }
+
     public Skill create(String name) {
         return skillRepo.save(new Skill(name));
     }
