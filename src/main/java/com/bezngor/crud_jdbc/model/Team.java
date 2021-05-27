@@ -6,6 +6,7 @@ public class Team {
     private Integer id;
     private String name;
     private List<Developer> devs;
+    private TeamStatus status;
 
     public Team(Integer id, String name, List<Developer> devs) {
         this.id = id;

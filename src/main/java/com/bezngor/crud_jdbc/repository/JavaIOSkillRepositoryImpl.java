@@ -10,26 +10,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JavaIOSkillRepositoryImpl implements SkillRepository {
-    DBWorker worker;
-    String query = null;
-    Statement statement = null;
-    PreparedStatement preparedStatement = null;
-    ResultSet resultSet = null;
-    Integer id = null;
-    String name = null;
-
-    public JavaIOSkillRepositoryImpl() {
-        worker = new DBWorker();
-    }
+    static final String SQL_GET_ALL = "select * from skills";
+    static final String SQL_GET_BY_ID = "select id, name from skills where id = ?";
+    static final String SQL_SAVE = "insert into skills(name) values(?)";
+    static final String SQL_UPDATE = "update skills set name = ? where id = ?";
+    static final String SQL_DELETE_BY_ID = "delete from skills where id = ?";
+    static DBWorker worker = new DBWorker();
 
     @Override
     public List<Skill> getAll() {
+        int id;
+        String name;
         List<Skill> skills = new ArrayList<>();
-        query = "select * from skills";
 
-        try {
-            statement = worker.getConnection().createStatement();
-            resultSet = statement.executeQuery(query);
+        try (Statement statement = worker.getConnection().createStatement();
+             ResultSet resultSet = statement.executeQuery(SQL_GET_ALL);
+        ) {
 
             while (resultSet.next()) {
                 id = resultSet.getInt("id");
@@ -44,13 +40,13 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
 
     @Override
     public Skill getById(Integer id) {
+        String name;
         Skill result = null;
-        query = "select id, name from skills where id = ?";
 
-        try {
-            preparedStatement = worker.getConnection().prepareStatement(query);
+        try (PreparedStatement preparedStatement = worker.getConnection().prepareStatement(SQL_GET_BY_ID);
+             ResultSet resultSet = preparedStatement.executeQuery();
+        ) {
             preparedStatement.setInt(1, id);
-            resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 id = resultSet.getInt("id");
@@ -65,9 +61,9 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
 
     @Override
     public Skill save(Skill skill) {
-        query = "insert into skills(name) values(?)";
-        try {
-            preparedStatement = worker.getConnection().prepareStatement(query);
+
+        try (PreparedStatement preparedStatement = worker.getConnection().prepareStatement(SQL_SAVE);)
+        {
             preparedStatement.setString(1, skill.getName());
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -78,9 +74,9 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
 
     @Override
     public Skill update(Skill skill) {
-        query = "update skills set name = ? where id = ?";
-        try {
-            preparedStatement = worker.getConnection().prepareStatement(query);
+
+        try (PreparedStatement preparedStatement = worker.getConnection().prepareStatement(SQL_UPDATE);)
+        {
             preparedStatement.setString(1, skill.getName());
             preparedStatement.setInt(2, skill.getId());
             preparedStatement.executeUpdate();
@@ -93,9 +89,9 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
 
     @Override
     public void deleteById(Integer id) {
-        query = "delete from skills where id = ?";
-        try {
-            preparedStatement = worker.getConnection().prepareStatement(query);
+
+        try (PreparedStatement preparedStatement = worker.getConnection().prepareStatement(SQL_DELETE_BY_ID);)
+        {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
