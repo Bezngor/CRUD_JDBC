@@ -22,7 +22,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
         String name;
         List<Skill> skills = new ArrayList<>();
 
-        try (Statement statement = worker.getConnection().createStatement();
+        try (Statement statement = DBWorker.getConnection().createStatement();
              ResultSet resultSet = statement.executeQuery(SQL_GET_ALL);
         ) {
 
@@ -53,7 +53,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
     @Override
     public Skill save(Skill skill) {
 
-        try (PreparedStatement preparedStatement = worker.getConnection().prepareStatement(SQL_SAVE);)
+        try (PreparedStatement preparedStatement = DBWorker.getConnection().prepareStatement(SQL_SAVE);)
         {
             preparedStatement.setString(1, skill.getName());
             preparedStatement.execute();
@@ -66,7 +66,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
     @Override
     public Skill update(Skill skill) {
 
-        try (PreparedStatement preparedStatement = worker.getConnection().prepareStatement(SQL_UPDATE);)
+        try (PreparedStatement preparedStatement = DBWorker.getConnection().prepareStatement(SQL_UPDATE);)
         {
             preparedStatement.setString(1, skill.getName());
             preparedStatement.setInt(2, skill.getId());
@@ -81,7 +81,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
     @Override
     public void deleteById(Integer id) {
 
-        try (PreparedStatement preparedStatement = worker.getConnection().prepareStatement(SQL_DELETE_BY_ID);)
+        try (PreparedStatement preparedStatement = DBWorker.getConnection().prepareStatement(SQL_DELETE_BY_ID);)
         {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();

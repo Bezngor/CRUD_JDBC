@@ -30,9 +30,9 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
 
     @Override
     public Developer save(Developer developer) {
-        try (PreparedStatement preparedStatement1 = worker.getConnection().prepareStatement(SQL_SAVE_NAMES);
-             PreparedStatement preparedStatement2 = worker.getConnection().prepareStatement(SQL_SAVE_SKILLS);
-             Statement statement = worker.getConnection().createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        try (PreparedStatement preparedStatement1 = DBWorker.getConnection().prepareStatement(SQL_SAVE_NAMES);
+             PreparedStatement preparedStatement2 = DBWorker.getConnection().prepareStatement(SQL_SAVE_SKILLS);
+             Statement statement = DBWorker.getConnection().createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
              ResultSet resultSet = statement.executeQuery(SQL_GET_ALL))
         {
             preparedStatement1.setString(1, developer.getFirstName());

@@ -10,8 +10,8 @@ public class DBWorker {
 
     private static final String USER = "root";
     private static final String PASSWORD = "V2gpYplBQhgz";
+    private static Connection connection;
 
-    private Connection connection;
 
     public DBWorker() {
         try {
@@ -22,7 +22,7 @@ public class DBWorker {
         }
     }
 
-    public Connection getConnection() {
+    public static Connection getConnection() {
         return connection;
     }
 }
