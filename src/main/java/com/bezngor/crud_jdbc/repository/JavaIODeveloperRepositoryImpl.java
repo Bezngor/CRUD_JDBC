@@ -10,10 +10,10 @@ import java.sql.Statement;
 import java.util.List;
 
 public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
-    static final String SQL_GET_ALL = "select * from developers";
+    static final String SQL_GET_ALL = "select * from crud_jdbc.developers";
     static final String SQL_GET_BY_ID = "select id, name from developers where id = ?";
-    static final String SQL_SAVE_NAMES = "insert into developers(firstName, lastName) values(?, ?)";
-    static final String SQL_SAVE_SKILLS = "insert into skills_of_developers(id_dev, id_skill) values(?, ?)";
+    static final String SQL_SAVE_NAMES = "insert into crud_jdbc.developers(firstName, lastName) values(?, ?)";
+    static final String SQL_SAVE_SKILLS = "insert into crud_jdbc.skills_of_developers(id_dev, id_skill) values(?, ?)";
     static final String SQL_UPDATE = "update developers set name = ? where id = ?";
     static final String SQL_DELETE_BY_ID = "delete from developers where id = ?";
     static DBWorker worker = new DBWorker();
