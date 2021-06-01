@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SkillControllerTest {
     private SkillRepository mockedRepository;
-    private SkillController mockedController;
+    private SkillController controller;
     private Skill skill;
     private String name;
 
@@ -23,7 +23,7 @@ class SkillControllerTest {
     @BeforeEach
     void setUp() {
         mockedRepository = Mockito.mock(JavaIOSkillRepositoryImpl.class);
-        mockedController = Mockito.mock(SkillController.class);
+        controller = new SkillController();
         name = "Java";
         skill = new Skill(name);
     }
@@ -36,13 +36,13 @@ class SkillControllerTest {
     @Test
     void create() {
         Mockito.when(mockedRepository.save(new Skill(name))).thenReturn(skill);
-        assertSame(mockedController.create(name), skill);
+        assertEquals(controller.create(name).getName(), name);
     }
 
     @Test
     void update() {
         Mockito.when(mockedRepository.update(new Skill(0, name))).thenReturn(skill);
-        assertSame(mockedController.update(0,name), skill);
+        assertSame(controller.update(0,name).getName(), name);
     }
 
     @Test
@@ -50,13 +50,13 @@ class SkillControllerTest {
         List<Skill> skills = new ArrayList<>();
         skills.add(new Skill(name));
         Mockito.when(mockedRepository.getAll()).thenReturn(skills);
-        assertSame(mockedController.getAll(), skills);
+        assertSame(controller.getAll(), skills);
     }
 
     @Test
     void getById() {
         Mockito.when(mockedRepository.getById(0)).thenReturn(skill);
-        assertSame(mockedController.getById(0), skill);
+        assertSame(controller.getById(0), skill);
     }
 
     @Test
