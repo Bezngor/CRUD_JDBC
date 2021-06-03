@@ -3,12 +3,15 @@ package com.bezngor.crud_jdbc.controller;
 import com.bezngor.crud_jdbc.model.Developer;
 import com.bezngor.crud_jdbc.model.Skill;
 import com.bezngor.crud_jdbc.repository.DeveloperRepository;
-import com.bezngor.crud_jdbc.repository.JavaIODeveloperRepositoryImpl;
 
 import java.util.List;
 
-public class DeveloperController {
-    private DeveloperRepository devRepo = new JavaIODeveloperRepositoryImpl();
+public class DeveloperControllerCli {
+    private final DeveloperRepository devRepo;
+
+    public DeveloperControllerCli(DeveloperRepository devRepo) {
+        this.devRepo = devRepo;
+    }
 
     public DeveloperRepository getDevRepo() {
         return devRepo;
