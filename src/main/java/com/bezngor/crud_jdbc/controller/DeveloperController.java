@@ -5,6 +5,7 @@ import com.bezngor.crud_jdbc.model.Skill;
 import com.bezngor.crud_jdbc.repository.DeveloperRepository;
 import com.bezngor.crud_jdbc.repository.JavaIODeveloperRepositoryImpl;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class DeveloperController {
@@ -18,7 +19,7 @@ public class DeveloperController {
         return devRepo.update(new Developer(id, firstName, lastName, skills));
     }
 
-    public List<Developer> getAll() {
+    public List<Developer> getAll() throws SQLException {
         return devRepo.getAll();
     }
 

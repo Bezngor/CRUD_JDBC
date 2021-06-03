@@ -4,10 +4,11 @@ import com.bezngor.crud_jdbc.repository.DBWorker;
 import com.bezngor.crud_jdbc.view.DeveloperView;
 import com.bezngor.crud_jdbc.view.SkillView;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         SkillView skillView = new SkillView();
         DeveloperView devView = new DeveloperView();
         //TeamView teamView = new TeamView();

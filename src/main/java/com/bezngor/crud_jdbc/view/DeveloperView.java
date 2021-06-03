@@ -4,6 +4,7 @@ import com.bezngor.crud_jdbc.controller.DeveloperController;
 import com.bezngor.crud_jdbc.model.Skill;
 import com.bezngor.crud_jdbc.controller.SkillController;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -12,7 +13,7 @@ public class DeveloperView {
     static DeveloperController devController = new DeveloperController();
     static SkillController skillController = new SkillController();
 
-    public void devViewStart() {
+    public void devViewStart() throws SQLException {
         System.out.println("1 - Сохранить новый Developer;\n2 - Обновить Developer по индексу;\n" +
                 "3 - Вывести Developer по индексу;\n4 - Вывести все Developer;\n" +
                 "5 - Удалить Developer по индексу;\nexit - Выход из модуля.");
