@@ -3,6 +3,7 @@ package com.bezngor.crud_jdbc;
 import com.bezngor.crud_jdbc.repository.DBWorker;
 import com.bezngor.crud_jdbc.view.DeveloperView;
 import com.bezngor.crud_jdbc.view.SkillView;
+import com.bezngor.crud_jdbc.view.TeamView;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -11,7 +12,7 @@ public class Main {
     public static void main(String[] args) throws SQLException {
         SkillView skillView = new SkillView();
         DeveloperView devView = new DeveloperView();
-        //TeamView teamView = new TeamView();
+        TeamView teamView = new TeamView();
 
         System.out.println("Выберите тип операции:\n1 - Операции с Skill\n" +
                 "2 - Операции с Developer\n3 - Операции с Team\nquit - Завершить работу.");
@@ -30,7 +31,7 @@ public class Main {
                     devView.devViewStart();
                     break;
                 case "3":
-                    //teamView.teamViewStart();
+                    teamView.teamViewStart();
                     break;
                 case "quit":
                     hasNext = false;

@@ -8,14 +8,21 @@ public class Team {
     private List<Developer> devs;
     private TeamStatus status;
 
-    public Team(Integer id, String name, List<Developer> devs) {
+    public Team(Integer id, String name, TeamStatus status, List<Developer> devs) {
         this.id = id;
         this.name = name;
+        this.status = status;
         this.devs = devs;
     }
 
     public Team(String name, List<Developer> devs) {
         this.name = name;
+        this.devs = devs;
+    }
+
+    public Team(String name, TeamStatus status, List<Developer> devs) {
+        this.name = name;
+        this.status = status;
         this.devs = devs;
     }
 
@@ -43,12 +50,21 @@ public class Team {
         this.devs = devs;
     }
 
+    public TeamStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TeamStatus status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "Team{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", devs=" + devs +
+                ", status=" + status +
                 '}';
     }
 }

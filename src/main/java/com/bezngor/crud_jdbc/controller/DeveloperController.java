@@ -8,7 +8,7 @@ import com.bezngor.crud_jdbc.repository.JavaIODeveloperRepositoryImpl;
 import java.util.List;
 
 public class DeveloperController {
-    private DeveloperRepository devRepo = new JavaIODeveloperRepositoryImpl();
+    public static DeveloperRepository devRepo = new JavaIODeveloperRepositoryImpl();
 
     public DeveloperRepository getDevRepo() {
         return devRepo;

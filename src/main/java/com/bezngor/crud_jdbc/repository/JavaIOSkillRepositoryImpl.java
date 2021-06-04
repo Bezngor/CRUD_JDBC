@@ -16,13 +16,15 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
     static final String SQL_DELETE_BY_ID = "delete from skills where id = ?";
     static DBWorker worker = new DBWorker();
 
+
     @Override
     public List<Skill> getAll() {
         int id;
         String name;
         List<Skill> skills = new ArrayList<>();
 
-        try (Statement statement = DBWorker.getConnection().createStatement();
+        try (Statement statement = DBWorker.getConnection()
+                .createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
              ResultSet resultSet = statement.executeQuery(SQL_GET_ALL);
         ) {
 
@@ -31,6 +33,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
                 name = resultSet.getString("name");
                 skills.add(new Skill(id, name));
             }
+            resultSet.first();
         } catch (SQLException e) {
             e.printStackTrace();
         }

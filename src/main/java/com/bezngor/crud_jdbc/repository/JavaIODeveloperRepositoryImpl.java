@@ -12,7 +12,6 @@ import java.util.List;
 
 public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
     static final String SQL_GET_ALL_DEVS = "select * from crud_jdbc.developers";
-    static final String SQL_GET_ALL_SKILLS = "select * from crud_jdbc.skills";
     static final String SQL_GET_SKILLS_OF_DEV = "select * from crud_jdbc.skills_of_developers";
     static final String SQL_SAVE_NAMES = "insert into crud_jdbc.developers(firstName, lastName) values(?, ?)";
     static final String SQL_SAVE_SKILLS = "insert into crud_jdbc.skills_of_developers(id_dev, id_skill) values(?, ?)";
@@ -20,27 +19,23 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
     static final String SQL_SKILLS_DELETE = "delete from crud_jdbc.skills_of_developers where id_dev = ?";
     static final String SQL_DELETE_BY_ID = "delete from crud_jdbc.developers where id = ?";
     static DBWorker worker = new DBWorker();
+    public JavaIOSkillRepositoryImpl skillRepository = new JavaIOSkillRepositoryImpl();
 
     @Override
     public List<Developer> getAll() {
         List<Developer> devs = new ArrayList<>();
         int idDev;
-        int idSkill;
         int id_dev;
         int id_skill;
-        String nameSkill;
         String firstName;
         String lastName;
 
         try (Statement statement1 = DBWorker.getConnection().createStatement();
             Statement statement2 = DBWorker.getConnection()
-                .createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            Statement statement3 = DBWorker.getConnection()
                 .createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY))
 
         {   ResultSet resultSetNames = statement1.executeQuery(SQL_GET_ALL_DEVS);
             ResultSet resultSetSkillsOfDev = statement2.executeQuery(SQL_GET_SKILLS_OF_DEV);
-            ResultSet resultSetSkills = statement3.executeQuery(SQL_GET_ALL_SKILLS);
 
             while (resultSetNames.next()) {
                 idDev = resultSetNames.getInt("id");
@@ -53,18 +48,11 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
                     if (id_dev == idDev) {
                         id_skill = resultSetSkillsOfDev.getInt("id_skill");
 
-                        while (resultSetSkills.next()) {
-                            idSkill = resultSetSkills.getInt("id");
-                            if (id_skill == idSkill) {
-                                nameSkill = resultSetSkills.getString("name");
-                                skills.add(new Skill(id_skill, nameSkill));
-                                break;
-                            }
-                        }
-                        resultSetSkills.first();
+                        skills.add(skillRepository.getById(id_skill));
                     }
                 }
                 resultSetSkillsOfDev.first();
+
                 devs.add(new Developer(idDev, firstName, lastName, skills));
             }
         } catch (SQLException e) {
