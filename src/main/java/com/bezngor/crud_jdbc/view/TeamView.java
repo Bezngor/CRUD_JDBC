@@ -30,8 +30,8 @@ public class TeamView {
                     System.out.println("Введите имя Team:");
                     String name1 = scan.nextLine();
                     System.out.println("Введите статус Team:\n   1 - ACTIVE\n   2 - UNDER_REVIEW\n   3 - DELETED");
-                    String statusId = scan.nextLine();
-                    TeamStatus status = getStatusTeam(statusId);
+                    String statusId1 = scan.nextLine();
+                    TeamStatus status1 = getStatusTeam(statusId1);
                     System.out.println("Для добавления Developer введите его id.\nПо окончании введите end");
                     List<Developer> devs1 = new ArrayList<>();
                     boolean isNext1 = true;
@@ -43,13 +43,16 @@ public class TeamView {
                         } else isNext1 = false;
                     }
 
-                    teamController.create(name1, status, devs1);
+                    teamController.create(name1, status1, devs1);
                     break;
                 case "2":
                     System.out.println("Введите id обновляемого Team:");
                     Integer id2 = Integer.parseInt(scan.nextLine());
                     System.out.println("Введите имя Team:");
                     String name2 = scan.nextLine();
+                    System.out.println("Введите статус Team:\n   1 - ACTIVE\n   2 - UNDER_REVIEW\n   3 - DELETED");
+                    String statusId2 = scan.nextLine();
+                    TeamStatus status2 = getStatusTeam(statusId2);
 
                     System.out.println("Для добавления Developer введите его id.\nПо окончании введите end");
                     List<Developer> devs2 = new ArrayList<>();
@@ -61,8 +64,7 @@ public class TeamView {
                             System.out.println("Введите id следующего Developer:");
                         } else isNext2 = false;
                     }
-
-//////////                    teamController.update(id2, name2, status, devs2);
+                    teamController.update(id2, name2, status2, devs2);
                     break;
                 case "3":
                     System.out.println("Введите id вызываемого Team:");

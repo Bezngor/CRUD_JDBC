@@ -18,8 +18,6 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class DeveloperControllerCliTest {
     private DeveloperRepository developerRepository;
     private DeveloperControllerCli developerControllerCli;

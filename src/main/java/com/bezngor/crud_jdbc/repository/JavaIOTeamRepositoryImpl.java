@@ -18,9 +18,9 @@ public class JavaIOTeamRepositoryImpl implements TeamRepository {
     static final String SQL_GET_DEVS_OF_TEAMS = "select * from crud_jdbc.developers_of_teams";
     static final String SQL_SAVE_TEAMS = "insert into crud_jdbc.teams(name, status) values(?, ?)";
     static final String SQL_SAVE_DEVS = "insert into crud_jdbc.developers_of_teams(id_team, id_dev) values(?, ?)";
-    static final String SQL_UPDATE_NAMES = "update crud_jdbc.developers set firstName = ?, lastName = ? where id = ?";
-    static final String SQL_SKILLS_DELETE = "delete from crud_jdbc.skills_of_developers where id_dev = ?";
-    static final String SQL_DELETE_BY_ID = "delete from crud_jdbc.developers where id = ?";
+    static final String SQL_UPDATE_NAMES = "update crud_jdbc.teams set name = ?, status = ? where id = ?";
+    static final String SQL_DEVS_DELETE = "delete from crud_jdbc.developers_of_teams where id_team = ?";
+    static final String SQL_DELETE_BY_ID = "delete from crud_jdbc.teams where id = ?";
     static DBWorker worker = new DBWorker();
     JavaIODeveloperRepositoryImpl developerRepository = new JavaIODeveloperRepositoryImpl();
 
@@ -108,12 +108,51 @@ public class JavaIOTeamRepositoryImpl implements TeamRepository {
 
     @Override
     public Team update(Team team) {
-        return null;
+        Team updTeam = null;
+
+        try (PreparedStatement preparedStatement1 = DBWorker.getConnection().prepareStatement(SQL_UPDATE_NAMES);
+            PreparedStatement preparedStatement2 = DBWorker.getConnection().prepareStatement(SQL_DEVS_DELETE);
+            PreparedStatement preparedStatement3 = DBWorker.getConnection().prepareStatement(SQL_SAVE_DEVS))
+        {
+            List<Team> teams = this.getAll();
+            updTeam = teams.stream().filter(s -> s.getId() == team.getId()).findFirst().orElse(null);
+            updTeam.setName(team.getName());
+            updTeam.setStatus(team.getStatus());
+            updTeam.setDevs(team.getDevs());
+
+            preparedStatement1.setString(1, updTeam.getName());
+            preparedStatement1.setInt(2, setStatusTeam(updTeam.getStatus()));
+            preparedStatement1.setInt(3, updTeam.getId());
+            preparedStatement1.executeUpdate();
+
+            preparedStatement2.setInt(1, updTeam.getId());
+            preparedStatement2.executeUpdate();
+
+            for (Developer d : team.getDevs()) {
+                preparedStatement3.setInt(1, updTeam.getId());
+                preparedStatement3.setInt(2, d.getId());
+                preparedStatement3.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return updTeam;
     }
 
     @Override
-    public void deleteById(Integer integer) {
+    public void deleteById(Integer id) {
+        try (PreparedStatement preparedStatement1 = DBWorker.getConnection().prepareStatement(SQL_DEVS_DELETE);
+            PreparedStatement preparedStatement2 = DBWorker.getConnection().prepareStatement(SQL_DELETE_BY_ID))
+        {
+            preparedStatement1.setInt(1, id);
+            preparedStatement1.executeUpdate();
 
+            preparedStatement2.setInt(1, id);
+            preparedStatement2.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public TeamStatus getStatusTeam(int statusId) {
