@@ -1,7 +1,9 @@
-package com.bezngor.crud_jdbc.repository;
+package com.bezngor.crud_jdbc.repository.jdbc;
 
 import com.bezngor.crud_jdbc.model.Developer;
 import com.bezngor.crud_jdbc.model.Skill;
+import com.bezngor.crud_jdbc.utils.JdbcUtils;
+import com.bezngor.crud_jdbc.repository.DeveloperRepository;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +20,7 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
     static final String SQL_UPDATE_NAMES = "update crud_jdbc.developers set firstName = ?, lastName = ? where id = ?";
     static final String SQL_SKILLS_DELETE = "delete from crud_jdbc.skills_of_developers where id_dev = ?";
     static final String SQL_DELETE_BY_ID = "delete from crud_jdbc.developers where id = ?";
-    static DBWorker worker = new DBWorker();
+    static JdbcUtils worker = new JdbcUtils();
     public JavaIOSkillRepositoryImpl skillRepository = new JavaIOSkillRepositoryImpl();
 
     @Override
@@ -30,8 +32,8 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
         String firstName;
         String lastName;
 
-        try (Statement statement1 = DBWorker.getConnection().createStatement();
-            Statement statement2 = DBWorker.getConnection()
+        try (Statement statement1 = JdbcUtils.getConnection().createStatement();
+             Statement statement2 = JdbcUtils.getConnection()
                 .createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY))
 
         {   ResultSet resultSetNames = statement1.executeQuery(SQL_GET_ALL_DEVS);
@@ -76,9 +78,9 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
 
     @Override
     public Developer save(Developer developer) {
-        try (PreparedStatement preparedStatement1 = DBWorker.getConnection().prepareStatement(SQL_SAVE_NAMES);
-             PreparedStatement preparedStatement2 = DBWorker.getConnection().prepareStatement(SQL_SAVE_SKILLS);
-             Statement statement = DBWorker.getConnection()
+        try (PreparedStatement preparedStatement1 = JdbcUtils.getConnection().prepareStatement(SQL_SAVE_NAMES);
+             PreparedStatement preparedStatement2 = JdbcUtils.getConnection().prepareStatement(SQL_SAVE_SKILLS);
+             Statement statement = JdbcUtils.getConnection()
                      .createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY))
         {
             preparedStatement1.setString(1, developer.getFirstName());
@@ -104,9 +106,9 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
     @Override
     public Developer update(Developer dev) {
         Developer updDev = null;
-    try (PreparedStatement preparedStatement1 = DBWorker.getConnection().prepareStatement(SQL_UPDATE_NAMES);
-        PreparedStatement preparedStatement2 = DBWorker.getConnection().prepareStatement(SQL_SKILLS_DELETE);
-        PreparedStatement preparedStatement3 = DBWorker.getConnection().prepareStatement(SQL_SAVE_SKILLS))
+    try (PreparedStatement preparedStatement1 = JdbcUtils.getConnection().prepareStatement(SQL_UPDATE_NAMES);
+         PreparedStatement preparedStatement2 = JdbcUtils.getConnection().prepareStatement(SQL_SKILLS_DELETE);
+         PreparedStatement preparedStatement3 = JdbcUtils.getConnection().prepareStatement(SQL_SAVE_SKILLS))
     {
         List<Developer> devs = this.getAll();
         updDev = devs.stream().filter(s -> s.getId() == dev.getId()).findFirst().orElse(null);
@@ -135,8 +137,8 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
 
     @Override
     public void deleteById(Integer id) {
-        try (PreparedStatement preparedStatement1 = DBWorker.getConnection().prepareStatement(SQL_SKILLS_DELETE);
-            PreparedStatement preparedStatement2 = DBWorker.getConnection().prepareStatement(SQL_DELETE_BY_ID))
+        try (PreparedStatement preparedStatement1 = JdbcUtils.getConnection().prepareStatement(SQL_SKILLS_DELETE);
+             PreparedStatement preparedStatement2 = JdbcUtils.getConnection().prepareStatement(SQL_DELETE_BY_ID))
         {
             preparedStatement1.setInt(1, id);
             preparedStatement1.executeUpdate();

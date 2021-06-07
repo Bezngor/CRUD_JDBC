@@ -1,6 +1,7 @@
 package com.bezngor.crud_jdbc.view;
 
 import com.bezngor.crud_jdbc.controller.SkillController;
+import com.bezngor.crud_jdbc.utils.Constants;
 
 import java.util.Scanner;
 
@@ -17,7 +18,7 @@ public class SkillView {
         Scanner scan = new Scanner(System.in);
 
         while (!isExist) {
-            System.out.println("Введите код операции:");
+            System.out.println(Constants.INSERT_CODE_OPERATION);
             buf = scan.nextLine();
             switch (buf) {
                 case "1":

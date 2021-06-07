@@ -1,6 +1,5 @@
 package com.bezngor.crud_jdbc;
 
-import com.bezngor.crud_jdbc.repository.DBWorker;
 import com.bezngor.crud_jdbc.view.DeveloperView;
 import com.bezngor.crud_jdbc.view.SkillView;
 import com.bezngor.crud_jdbc.view.TeamView;

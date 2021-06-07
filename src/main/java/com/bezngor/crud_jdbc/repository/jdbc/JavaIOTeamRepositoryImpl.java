@@ -1,9 +1,10 @@
-package com.bezngor.crud_jdbc.repository;
+package com.bezngor.crud_jdbc.repository.jdbc;
 
 import com.bezngor.crud_jdbc.model.Developer;
-import com.bezngor.crud_jdbc.model.Skill;
 import com.bezngor.crud_jdbc.model.Team;
 import com.bezngor.crud_jdbc.model.TeamStatus;
+import com.bezngor.crud_jdbc.utils.JdbcUtils;
+import com.bezngor.crud_jdbc.repository.TeamRepository;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +22,7 @@ public class JavaIOTeamRepositoryImpl implements TeamRepository {
     static final String SQL_UPDATE_NAMES = "update crud_jdbc.teams set name = ?, status = ? where id = ?";
     static final String SQL_DEVS_DELETE = "delete from crud_jdbc.developers_of_teams where id_team = ?";
     static final String SQL_DELETE_BY_ID = "delete from crud_jdbc.teams where id = ?";
-    static DBWorker worker = new DBWorker();
+    static JdbcUtils worker = new JdbcUtils();
     JavaIODeveloperRepositoryImpl developerRepository = new JavaIODeveloperRepositoryImpl();
 
     @Override
@@ -35,8 +36,8 @@ public class JavaIOTeamRepositoryImpl implements TeamRepository {
         String nameTeam;
         TeamStatus status;
 
-        try (Statement statement1 = DBWorker.getConnection().createStatement();
-             Statement statement2 = DBWorker.getConnection()
+        try (Statement statement1 = JdbcUtils.getConnection().createStatement();
+             Statement statement2 = JdbcUtils.getConnection()
                      .createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY))
 
         {   ResultSet resultSetTeams = statement1.executeQuery(SQL_GET_ALL_TEAMS);
@@ -81,9 +82,9 @@ public class JavaIOTeamRepositoryImpl implements TeamRepository {
 
     @Override
     public Team save(Team team) {
-        try (PreparedStatement preparedStatement1 = DBWorker.getConnection().prepareStatement(SQL_SAVE_TEAMS);
-            PreparedStatement preparedStatement2 = DBWorker.getConnection().prepareStatement(SQL_SAVE_DEVS);
-             Statement statement = DBWorker.getConnection()
+        try (PreparedStatement preparedStatement1 = JdbcUtils.getConnection().prepareStatement(SQL_SAVE_TEAMS);
+             PreparedStatement preparedStatement2 = JdbcUtils.getConnection().prepareStatement(SQL_SAVE_DEVS);
+             Statement statement = JdbcUtils.getConnection()
                      .createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY))
         {
             int statusId = setStatusTeam(team.getStatus());
@@ -110,9 +111,9 @@ public class JavaIOTeamRepositoryImpl implements TeamRepository {
     public Team update(Team team) {
         Team updTeam = null;
 
-        try (PreparedStatement preparedStatement1 = DBWorker.getConnection().prepareStatement(SQL_UPDATE_NAMES);
-            PreparedStatement preparedStatement2 = DBWorker.getConnection().prepareStatement(SQL_DEVS_DELETE);
-            PreparedStatement preparedStatement3 = DBWorker.getConnection().prepareStatement(SQL_SAVE_DEVS))
+        try (PreparedStatement preparedStatement1 = JdbcUtils.getConnection().prepareStatement(SQL_UPDATE_NAMES);
+             PreparedStatement preparedStatement2 = JdbcUtils.getConnection().prepareStatement(SQL_DEVS_DELETE);
+             PreparedStatement preparedStatement3 = JdbcUtils.getConnection().prepareStatement(SQL_SAVE_DEVS))
         {
             List<Team> teams = this.getAll();
             updTeam = teams.stream().filter(s -> s.getId() == team.getId()).findFirst().orElse(null);
@@ -142,8 +143,8 @@ public class JavaIOTeamRepositoryImpl implements TeamRepository {
 
     @Override
     public void deleteById(Integer id) {
-        try (PreparedStatement preparedStatement1 = DBWorker.getConnection().prepareStatement(SQL_DEVS_DELETE);
-            PreparedStatement preparedStatement2 = DBWorker.getConnection().prepareStatement(SQL_DELETE_BY_ID))
+        try (PreparedStatement preparedStatement1 = JdbcUtils.getConnection().prepareStatement(SQL_DEVS_DELETE);
+             PreparedStatement preparedStatement2 = JdbcUtils.getConnection().prepareStatement(SQL_DELETE_BY_ID))
         {
             preparedStatement1.setInt(1, id);
             preparedStatement1.executeUpdate();

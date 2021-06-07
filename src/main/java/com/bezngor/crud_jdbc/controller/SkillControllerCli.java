@@ -1,7 +1,6 @@
 package com.bezngor.crud_jdbc.controller;
 
 import com.bezngor.crud_jdbc.model.Skill;
-import com.bezngor.crud_jdbc.repository.JavaIOSkillRepositoryImpl;
 import com.bezngor.crud_jdbc.repository.SkillRepository;
 
 import java.util.List;

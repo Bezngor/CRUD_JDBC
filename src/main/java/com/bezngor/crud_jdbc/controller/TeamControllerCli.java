@@ -3,8 +3,6 @@ package com.bezngor.crud_jdbc.controller;
 import com.bezngor.crud_jdbc.model.Developer;
 import com.bezngor.crud_jdbc.model.Team;
 import com.bezngor.crud_jdbc.model.TeamStatus;
-import com.bezngor.crud_jdbc.repository.DeveloperRepository;
-import com.bezngor.crud_jdbc.repository.JavaIOTeamRepositoryImpl;
 import com.bezngor.crud_jdbc.repository.TeamRepository;
 
 import java.util.List;

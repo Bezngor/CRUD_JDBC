@@ -1,10 +1,10 @@
-package com.bezngor.crud_jdbc.repository;
+package com.bezngor.crud_jdbc.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DBWorker {
+public class JdbcUtils {
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String URL = "jdbc:mysql://localhost:3306/crud_jdbc";
 
@@ -13,7 +13,7 @@ public class DBWorker {
     private static Connection connection;
 
 
-    public DBWorker() {
+    public JdbcUtils() {
         try {
             Class.forName(DRIVER);
             connection = DriverManager.getConnection(URL, USER, PASSWORD);

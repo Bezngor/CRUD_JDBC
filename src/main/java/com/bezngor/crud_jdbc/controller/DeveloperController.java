@@ -3,7 +3,7 @@ package com.bezngor.crud_jdbc.controller;
 import com.bezngor.crud_jdbc.model.Developer;
 import com.bezngor.crud_jdbc.model.Skill;
 import com.bezngor.crud_jdbc.repository.DeveloperRepository;
-import com.bezngor.crud_jdbc.repository.JavaIODeveloperRepositoryImpl;
+import com.bezngor.crud_jdbc.repository.jdbc.JavaIODeveloperRepositoryImpl;
 
 import java.util.List;
 

@@ -1,6 +1,8 @@
-package com.bezngor.crud_jdbc.repository;
+package com.bezngor.crud_jdbc.repository.jdbc;
 
 import com.bezngor.crud_jdbc.model.Skill;
+import com.bezngor.crud_jdbc.utils.JdbcUtils;
+import com.bezngor.crud_jdbc.repository.SkillRepository;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +16,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
     static final String SQL_SAVE = "insert into skills(name) values(?)";
     static final String SQL_UPDATE = "update skills set name = ? where id = ?";
     static final String SQL_DELETE_BY_ID = "delete from skills where id = ?";
-    static DBWorker worker = new DBWorker();
+    static JdbcUtils worker = new JdbcUtils();
 
 
     @Override
@@ -23,7 +25,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
         String name;
         List<Skill> skills = new ArrayList<>();
 
-        try (Statement statement = DBWorker.getConnection()
+        try (Statement statement = JdbcUtils.getConnection()
                 .createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
              ResultSet resultSet = statement.executeQuery(SQL_GET_ALL);
         ) {
@@ -56,7 +58,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
     @Override
     public Skill save(Skill skill) {
 
-        try (PreparedStatement preparedStatement = DBWorker.getConnection().prepareStatement(SQL_SAVE);)
+        try (PreparedStatement preparedStatement = JdbcUtils.getConnection().prepareStatement(SQL_SAVE);)
         {
             preparedStatement.setString(1, skill.getName());
             preparedStatement.execute();
@@ -69,7 +71,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
     @Override
     public Skill update(Skill skill) {
 
-        try (PreparedStatement preparedStatement = DBWorker.getConnection().prepareStatement(SQL_UPDATE);)
+        try (PreparedStatement preparedStatement = JdbcUtils.getConnection().prepareStatement(SQL_UPDATE);)
         {
             preparedStatement.setString(1, skill.getName());
             preparedStatement.setInt(2, skill.getId());
@@ -84,7 +86,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
     @Override
     public void deleteById(Integer id) {
 
-        try (PreparedStatement preparedStatement = DBWorker.getConnection().prepareStatement(SQL_DELETE_BY_ID);)
+        try (PreparedStatement preparedStatement = JdbcUtils.getConnection().prepareStatement(SQL_DELETE_BY_ID);)
         {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
