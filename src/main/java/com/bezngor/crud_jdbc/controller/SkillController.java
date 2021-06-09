@@ -7,11 +7,11 @@ import com.bezngor.crud_jdbc.repository.SkillRepository;
 import java.util.List;
 
 public class SkillController {
-    private SkillRepository skillRepo = new JavaIOSkillRepositoryImpl();
-
+    private SkillRepository skillRepo;
 
 
     public SkillController(SkillRepository skillRepo) {
+        this.skillRepo = skillRepo;
     }
 
     public SkillRepository getSkillRepo() {

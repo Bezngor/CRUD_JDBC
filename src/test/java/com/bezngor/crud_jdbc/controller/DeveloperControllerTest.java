@@ -6,9 +6,9 @@ import com.bezngor.crud_jdbc.repository.DeveloperRepository;
 import com.bezngor.crud_jdbc.repository.jdbc.JavaIODeveloperRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
@@ -18,58 +18,77 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
-class DeveloperControllerCliTest {
+class DeveloperControllerTest {
     private DeveloperRepository developerRepository;
-    private DeveloperControllerCli developerControllerCli;
+    private DeveloperController developerController;
     private Developer dev;
     private List<Skill> skills;
 
     @BeforeEach
     void setUp() {
         developerRepository = mock(DeveloperRepository.class);
-        developerControllerCli = new DeveloperControllerCli(developerRepository);
+        developerController = new DeveloperController(developerRepository);
         skills = new ArrayList<>();
         dev = new Developer("John", "Smith", skills);
     }
 
     @Test
-    void testConstructor() {
-        JavaIODeveloperRepositoryImpl developerRepositoryImpl = new JavaIODeveloperRepositoryImpl();
-        assertSame(developerRepositoryImpl, new DeveloperControllerCli(developerRepositoryImpl).getDevRepo());
-    }
-
-    @Test
-    void testCreate() {
+    void testCreateTrue() {
         when(developerRepository.save(any())).thenReturn(dev);
-        assertSame(dev, developerControllerCli.create("John", "Smith", skills));
+        assertSame(dev, developerController.create("John", "Smith", skills));
         verify(developerRepository).save(any());
-        assertTrue(developerControllerCli.getAll().isEmpty());
+        assertTrue(developerController.getAll().isEmpty());
     }
 
     @Test
-    void testUpdate() {
+    void testCreateFalse() {
+        when(developerRepository.save(any())).thenReturn(dev);
+        assertFalse(developerController.create("John", "Smith", skills) == null);
+    }
+
+    @Test
+    void testUpdateTrue() {
         when(developerRepository.update(any())).thenReturn(dev);
-        assertSame(dev, developerControllerCli.update(1,"John", "Smith", skills));
+        assertSame(dev, developerController.update(1,"John", "Smith", skills));
         verify(developerRepository).update(any());
-        assertTrue(developerControllerCli.getAll().isEmpty());
+        assertTrue(developerController.getAll().isEmpty());
     }
 
     @Test
-    void testGetAll() {
+    void testUpdateFalse() {
+        when(developerRepository.update(any())).thenReturn(dev);
+        assertFalse(developerController.update(1, "John", "Smith", skills) == null);
+    }
+
+    @Test
+    void testGetAllTrue() {
         ArrayList<Developer> devList = new ArrayList<>();
         when(developerRepository.getAll()).thenReturn(devList);
-        List<Developer> actualList = developerControllerCli.getAll();
+        List<Developer> actualList = developerController.getAll();
         assertSame(devList, actualList);
         assertTrue(actualList.isEmpty());
         verify(developerRepository).getAll();
     }
 
     @Test
-    void testGetById() {
+    void testGetAllFalse() {
+        ArrayList<Developer> devList = new ArrayList<>();
+        when(developerRepository.getAll()).thenReturn(devList);
+        assertFalse(developerController.getAll() == null);
+    }
+
+    @Test
+    void testGetByIdTrue() {
         when(developerRepository.getById(any())).thenReturn(dev);
-        assertSame(dev, developerControllerCli.getById(1));
+        assertSame(dev, developerController.getById(1));
         verify(developerRepository).getById(any());
-        assertTrue(developerControllerCli.getAll().isEmpty());
+        assertTrue(developerController.getAll().isEmpty());
+    }
+
+    @Test
+    void testGetByIdFalse() {
+        when(developerRepository.getById(any())).thenReturn(dev);
+        assertFalse(developerController.getById(1) == null);
     }
 
     @Test
@@ -77,6 +96,6 @@ class DeveloperControllerCliTest {
         doNothing().when(developerRepository).deleteById(any());
         developerRepository.deleteById(1);
         verify(developerRepository).deleteById(any());
-        assertTrue(developerControllerCli.getAll().isEmpty());
+        assertTrue(developerController.getAll().isEmpty());
     }
 }

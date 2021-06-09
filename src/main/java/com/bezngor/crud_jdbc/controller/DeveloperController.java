@@ -8,7 +8,15 @@ import com.bezngor.crud_jdbc.repository.jdbc.JavaIODeveloperRepositoryImpl;
 import java.util.List;
 
 public class DeveloperController {
-    public static DeveloperRepository devRepo = new JavaIODeveloperRepositoryImpl();
+    private DeveloperRepository devRepo;
+
+    public DeveloperController(DeveloperRepository devRepo) {
+        this.devRepo = devRepo;
+    }
+
+    public DeveloperRepository getDevRepo() {
+        return devRepo;
+    }
 
     public Developer create(String firstName, String lastName, List<Skill> skills) {
         return devRepo.save(new Developer(null, firstName, lastName, skills));

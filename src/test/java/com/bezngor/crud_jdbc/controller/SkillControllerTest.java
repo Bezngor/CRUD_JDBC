@@ -1,7 +1,6 @@
 package com.bezngor.crud_jdbc.controller;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
@@ -13,6 +12,7 @@ import com.bezngor.crud_jdbc.repository.jdbc.JavaIOSkillRepositoryImpl;
 import com.bezngor.crud_jdbc.repository.SkillRepository;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +31,7 @@ public class SkillControllerTest {
     }
 
     @Test
-    public void testCreate() {
+    public void testCreateTrue() {
         when(skillRepository.save(any())).thenReturn(skill);
         assertSame(skill, skillController.create("Java"));
         verify(skillRepository).save(any());
@@ -39,7 +39,13 @@ public class SkillControllerTest {
     }
 
     @Test
-    public void testUpdate() {
+    public void testCreateFalse() {
+        when(skillRepository.save(any())).thenReturn(skill);
+        assertFalse(skillController.create(any()) == null);
+    }
+
+    @Test
+    public void testUpdateTrue() {
         when(skillRepository.update(any())).thenReturn(skill);
         assertSame(skill, skillController.update(1, "Java"));
         verify(skillRepository).update(any());
@@ -47,7 +53,13 @@ public class SkillControllerTest {
     }
 
     @Test
-    public void testGetAll() {
+    public void testUpdateFalse() {
+        when(skillRepository.update(any())).thenReturn(skill);
+        assertFalse(skillController.update(1, any()) == null);
+    }
+
+    @Test
+    public void testGetAllTrue() {
         ArrayList<Skill> skillList = new ArrayList<>();
         when(skillRepository.getAll()).thenReturn(skillList);
         List<Skill> actualAll = skillController.getAll();
@@ -57,7 +69,14 @@ public class SkillControllerTest {
     }
 
     @Test
-    public void testGetById() {
+    public void testGetAllFalse() {
+        ArrayList<Skill> skillList = new ArrayList<>();
+        when(skillRepository.getAll()).thenReturn(skillList);
+        assertFalse(skillController.getAll() == null);
+    }
+
+    @Test
+    public void testGetByIdTrue() {
         when(skillRepository.getById(any())).thenReturn(skill);
         assertSame(skill, skillController.getById(1));
         verify(skillRepository).getById(any());
@@ -65,7 +84,13 @@ public class SkillControllerTest {
     }
 
     @Test
-    public void testDeleteById() {
+    public void testGetByIdFalse() {
+        when(skillRepository.getById(any())).thenReturn(skill);
+        assertFalse(skillController.getById(1)  ==  null);
+    }
+
+    @Test
+    public void testDeleteByIdTrue() {
         doNothing().when(skillRepository).deleteById(any());
         skillController.deleteById(1);
         verify(skillRepository).deleteById(any());

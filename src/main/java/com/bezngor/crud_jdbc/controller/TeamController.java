@@ -3,14 +3,19 @@ package com.bezngor.crud_jdbc.controller;
 import com.bezngor.crud_jdbc.model.Developer;
 import com.bezngor.crud_jdbc.model.Team;
 import com.bezngor.crud_jdbc.model.TeamStatus;
+import com.bezngor.crud_jdbc.repository.TeamRepository;
 import com.bezngor.crud_jdbc.repository.jdbc.JavaIOTeamRepositoryImpl;
 
 import java.util.List;
 
 public class TeamController {
-    public static JavaIOTeamRepositoryImpl teamRepo = new JavaIOTeamRepositoryImpl();
+    private TeamRepository teamRepo;
 
-    public static JavaIOTeamRepositoryImpl getTeamRepo() {
+    public TeamController(TeamRepository teamRepo) {
+        this.teamRepo = teamRepo;
+    }
+
+    public TeamRepository getTeamRepo() {
         return teamRepo;
     }
 
