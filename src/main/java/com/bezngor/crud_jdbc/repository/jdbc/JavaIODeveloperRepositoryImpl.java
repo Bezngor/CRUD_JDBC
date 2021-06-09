@@ -14,13 +14,12 @@ import java.util.List;
 
 public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
     static final String SQL_GET_ALL_DEVS = "select * from crud_jdbc.developers";
-    static final String SQL_GET_SKILLS_OF_DEV = "select * from crud_jdbc.skills_of_developers";
+    static final String SQL_GET_SKILLS_OF_DEV = "select * from crud_jdbc.skills_devs";
     static final String SQL_SAVE_NAMES = "insert into crud_jdbc.developers(firstName, lastName) values(?, ?)";
-    static final String SQL_SAVE_SKILLS = "insert into crud_jdbc.skills_of_developers(id_dev, id_skill) values(?, ?)";
+    static final String SQL_SAVE_SKILLS = "insert into crud_jdbc.skills_devs(id_dev, id_skill) values(?, ?)";
     static final String SQL_UPDATE_NAMES = "update crud_jdbc.developers set firstName = ?, lastName = ? where id = ?";
-    static final String SQL_SKILLS_DELETE = "delete from crud_jdbc.skills_of_developers where id_dev = ?";
+    static final String SQL_SKILLS_DELETE = "delete from crud_jdbc.skills_devs where id_dev = ?";
     static final String SQL_DELETE_BY_ID = "delete from crud_jdbc.developers where id = ?";
-    static JdbcUtils worker = new JdbcUtils();
     public JavaIOSkillRepositoryImpl skillRepository = new JavaIOSkillRepositoryImpl();
 
     @Override

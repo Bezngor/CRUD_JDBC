@@ -14,7 +14,7 @@ public class Main {
         TeamView teamView = new TeamView();
 
         System.out.println("Выберите тип операции:\n1 - Операции с Skill\n" +
-                "2 - Операции с Developer\n3 - Операции с Team\nquit - Завершить работу.");
+                "2 - Операции с Developer\n3 - Операции с Team\nexit - Завершить работу.");
 
         Scanner scan = new Scanner(System.in);
         String str;
@@ -32,7 +32,7 @@ public class Main {
                 case "3":
                     teamView.teamViewStart();
                     break;
-                case "quit":
+                case "exit":
                     hasNext = false;
                     break;
                 default:

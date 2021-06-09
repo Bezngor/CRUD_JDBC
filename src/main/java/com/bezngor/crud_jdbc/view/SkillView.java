@@ -10,7 +10,7 @@ public class SkillView {
     static SkillController skillController = new SkillController(new JavaIOSkillRepositoryImpl());
 
     public void skillViewStart() {
-        System.out.printf(Constants.START_MESSAGE.getValue(),"Skill", Constants.END);
+        System.out.printf(Constants.START_MESSAGE.getValue(),"Skill", Constants.EXIT.getValue());
 
         boolean isExist = false;
         String buf;

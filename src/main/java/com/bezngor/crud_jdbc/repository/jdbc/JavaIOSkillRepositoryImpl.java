@@ -16,8 +16,6 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
     static final String SQL_SAVE = "insert into skills(name) values(?)";
     static final String SQL_UPDATE = "update skills set name = ? where id = ?";
     static final String SQL_DELETE_BY_ID = "delete from skills where id = ?";
-    static JdbcUtils worker = new JdbcUtils();
-
 
     @Override
     public List<Skill> getAll() {
@@ -29,7 +27,6 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
                 .createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
              ResultSet resultSet = statement.executeQuery(SQL_GET_ALL);
         ) {
-
             while (resultSet.next()) {
                 id = resultSet.getInt("id");
                 name = resultSet.getString("name");
@@ -51,7 +48,6 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
             if (s.getId() == id)
                 result = s;
         }
-
         return result;
     }
 
@@ -79,7 +75,6 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return skill;
     }
 

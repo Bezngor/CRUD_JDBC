@@ -17,7 +17,7 @@ public class DeveloperView {
     static SkillController skillController = new SkillController(new JavaIOSkillRepositoryImpl());
 
     public void devViewStart() throws SQLException {
-        System.out.printf(Constants.START_MESSAGE.getValue(), "Developer", Constants.END);
+        System.out.printf(Constants.START_MESSAGE.getValue(), "Developer", Constants.EXIT.getValue());
 
         boolean isExist = false;
         String buf;
@@ -81,7 +81,7 @@ public class DeveloperView {
                     devController.deleteById(id5);
                     break;
                 case "exit":
-                    isExist = buf.equals("exit");
+                    isExist = true;
                     break;
                 default:
                     System.out.println(Constants.WRONG_CODE.getValue());

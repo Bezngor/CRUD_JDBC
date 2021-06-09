@@ -11,25 +11,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class JavaIOTeamRepositoryImpl implements TeamRepository {
-    static final String SQL_GET_ALL_DEVS = "select * from crud_jdbc.developers";
     static final String SQL_GET_ALL_TEAMS = "select * from crud_jdbc.teams";
-    static final String SQL_GET_DEVS_OF_TEAMS = "select * from crud_jdbc.developers_of_teams";
+    static final String SQL_GET_DEVS_OF_TEAMS = "select * from crud_jdbc.devs_teams";
     static final String SQL_SAVE_TEAMS = "insert into crud_jdbc.teams(name, status) values(?, ?)";
-    static final String SQL_SAVE_DEVS = "insert into crud_jdbc.developers_of_teams(id_team, id_dev) values(?, ?)";
+    static final String SQL_SAVE_DEVS = "insert into crud_jdbc.devs_teams(id_team, id_dev) values(?, ?)";
     static final String SQL_UPDATE_NAMES = "update crud_jdbc.teams set name = ?, status = ? where id = ?";
-    static final String SQL_DEVS_DELETE = "delete from crud_jdbc.developers_of_teams where id_team = ?";
+    static final String SQL_DEVS_DELETE = "delete from crud_jdbc.devs_teams where id_team = ?";
     static final String SQL_DELETE_BY_ID = "delete from crud_jdbc.teams where id = ?";
-    static JdbcUtils worker = new JdbcUtils();
     JavaIODeveloperRepositoryImpl developerRepository = new JavaIODeveloperRepositoryImpl();
 
     @Override
     public List<Team> getAll() {
         List<Team> teams = new ArrayList<>();
         int idTeam;
-        int idDev;
         int idStatus;
         int id_team;
         int id_dev;
@@ -47,7 +45,11 @@ public class JavaIOTeamRepositoryImpl implements TeamRepository {
                 idTeam = resultSetTeams.getInt("id");
                 nameTeam = resultSetTeams.getString("name");
                 idStatus = resultSetTeams.getInt("status");
-                status = getStatusTeam(idStatus);
+                int finalIdStatus = idStatus;
+                status = Arrays.stream(TeamStatus.values())
+                        .filter(v -> v.getValue() == finalIdStatus)
+                        .findFirst()
+                        .orElse(null);
 
                 List<Developer> devs = new ArrayList<>();
                 while (resultSetDevsOfTeams.next()) {
@@ -87,7 +89,7 @@ public class JavaIOTeamRepositoryImpl implements TeamRepository {
              Statement statement = JdbcUtils.getConnection()
                      .createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY))
         {
-            int statusId = setStatusTeam(team.getStatus());
+            int statusId = team.getStatus().getValue();
             preparedStatement1.setString(1, team.getName());
             preparedStatement1.setInt(2, statusId);
             preparedStatement1.executeUpdate();
@@ -122,7 +124,7 @@ public class JavaIOTeamRepositoryImpl implements TeamRepository {
             updTeam.setDevs(team.getDevs());
 
             preparedStatement1.setString(1, updTeam.getName());
-            preparedStatement1.setInt(2, setStatusTeam(updTeam.getStatus()));
+            preparedStatement1.setInt(2, updTeam.getStatus().getValue());
             preparedStatement1.setInt(3, updTeam.getId());
             preparedStatement1.executeUpdate();
 
@@ -154,43 +156,5 @@ public class JavaIOTeamRepositoryImpl implements TeamRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public TeamStatus getStatusTeam(int statusId) {
-        TeamStatus status = null;
-        switch (statusId) {
-            case 1:
-                status = TeamStatus.ACTIVE;
-                break;
-            case 2:
-                status = TeamStatus.UNDER_REVIEW;
-                break;
-            case 3:
-                status = TeamStatus.DELETED;
-                break;
-            default:
-                System.out.println("Вы ввели неверный код!");
-                break;
-        }
-        return status;
-    }
-
-    public int setStatusTeam(TeamStatus statusName) {
-        int index = 0;
-        switch (statusName) {
-            case ACTIVE:
-                index = 1;
-                break;
-            case UNDER_REVIEW:
-                index = 2;
-                break;
-            case DELETED:
-                index = 3;
-                break;
-            default:
-                System.out.println("Вы ввели неверный код!");
-                break;
-        }
-        return index;
     }
 }
