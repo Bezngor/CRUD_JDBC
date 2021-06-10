@@ -21,19 +21,17 @@ import java.util.List;
 class DeveloperControllerTest {
     private DeveloperRepository developerRepository;
     private DeveloperController developerController;
-    private Developer dev;
-    private List<Skill> skills;
 
     @BeforeEach
     void setUp() {
         developerRepository = mock(DeveloperRepository.class);
         developerController = new DeveloperController(developerRepository);
-        skills = new ArrayList<>();
-        dev = new Developer("John", "Smith", skills);
     }
 
     @Test
     void testCreateTrue() {
+        List<Skill> skills = new ArrayList<>();
+        Developer dev = new Developer("John", "Smith", skills);
         when(developerRepository.save(any())).thenReturn(dev);
         assertSame(dev, developerController.create("John", "Smith", skills));
         verify(developerRepository).save(any());
@@ -42,12 +40,16 @@ class DeveloperControllerTest {
 
     @Test
     void testCreateFalse() {
+        List<Skill> skills = new ArrayList<>();
+        Developer dev = new Developer("John", "Smith", skills);
         when(developerRepository.save(any())).thenReturn(dev);
         assertFalse(developerController.create("John", "Smith", skills) == null);
     }
 
     @Test
     void testUpdateTrue() {
+        List<Skill> skills = new ArrayList<>();
+        Developer dev = new Developer("John", "Smith", skills);
         when(developerRepository.update(any())).thenReturn(dev);
         assertSame(dev, developerController.update(1,"John", "Smith", skills));
         verify(developerRepository).update(any());
@@ -56,6 +58,8 @@ class DeveloperControllerTest {
 
     @Test
     void testUpdateFalse() {
+        List<Skill> skills = new ArrayList<>();
+        Developer dev = new Developer("John", "Smith", skills);
         when(developerRepository.update(any())).thenReturn(dev);
         assertFalse(developerController.update(1, "John", "Smith", skills) == null);
     }
@@ -79,6 +83,8 @@ class DeveloperControllerTest {
 
     @Test
     void testGetByIdTrue() {
+        List<Skill> skills = new ArrayList<>();
+        Developer dev = new Developer("John", "Smith", skills);
         when(developerRepository.getById(any())).thenReturn(dev);
         assertSame(dev, developerController.getById(1));
         verify(developerRepository).getById(any());
@@ -87,6 +93,8 @@ class DeveloperControllerTest {
 
     @Test
     void testGetByIdFalse() {
+        List<Skill> skills = new ArrayList<>();
+        Developer dev = new Developer("John", "Smith", skills);
         when(developerRepository.getById(any())).thenReturn(dev);
         assertFalse(developerController.getById(1) == null);
     }

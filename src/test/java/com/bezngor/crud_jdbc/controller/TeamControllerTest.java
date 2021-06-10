@@ -21,19 +21,17 @@ import java.util.List;
 class TeamControllerTest {
     private TeamRepository teamRepository;
     private TeamController teamController;
-    private Team team;
-    private List<Developer> devs;
 
     @BeforeEach
     void setUp() {
         teamRepository = mock(TeamRepository.class);
         teamController = new TeamController(teamRepository);
-        devs = new ArrayList<>();
-        team = new Team("Team", TeamStatus.ACTIVE, devs);
     }
 
     @Test
     void createTrue() {
+        List<Developer> devs = new ArrayList<>();
+        Team team = new Team("Team", TeamStatus.ACTIVE, devs);
         when(teamRepository.save(any())).thenReturn(team);
         assertSame(team, teamController.create("Team", TeamStatus.ACTIVE, devs));
         verify(teamRepository).save(any());
@@ -42,12 +40,16 @@ class TeamControllerTest {
 
     @Test
     void createFalse() {
+        List<Developer> devs = new ArrayList<>();
+        Team team = new Team("Team", TeamStatus.ACTIVE, devs);
         when(teamRepository.save(any())).thenReturn(team);
         assertFalse(teamController.create("Team", TeamStatus.ACTIVE, devs) == null);
     }
 
     @Test
     void updateTrue() {
+        List<Developer> devs = new ArrayList<>();
+        Team team = new Team("Team", TeamStatus.ACTIVE, devs);
         when(teamRepository.update(any())).thenReturn(team);
         assertSame(team, teamController.update(1, "Team", TeamStatus.ACTIVE, devs));
         verify(teamRepository).update(any());
@@ -56,6 +58,8 @@ class TeamControllerTest {
 
     @Test
     void updateFalse() {
+        List<Developer> devs = new ArrayList<>();
+        Team team = new Team("Team", TeamStatus.ACTIVE, devs);
         when(teamRepository.update(any())).thenReturn(team);
         assertFalse(teamController.update(1, "Team", TeamStatus.ACTIVE, devs) == null);
     }
@@ -79,6 +83,8 @@ class TeamControllerTest {
 
     @Test
     void getByIdTrue() {
+        List<Developer> devs = new ArrayList<>();
+        Team team = new Team("Team", TeamStatus.ACTIVE, devs);
         when(teamRepository.getById(any())).thenReturn(team);
         assertSame(team, teamController.getById(1));
         verify(teamRepository).getById(any());
@@ -87,6 +93,8 @@ class TeamControllerTest {
 
     @Test
     void getByIdFalse() {
+        List<Developer> devs = new ArrayList<>();
+        Team team = new Team("Team", TeamStatus.ACTIVE, devs);
         when(teamRepository.getById(any())).thenReturn(team);
         assertFalse(teamController.getById(1) == null);
     }

@@ -21,17 +21,16 @@ import org.junit.jupiter.api.Test;
 public class SkillControllerTest {
     private SkillRepository skillRepository;
     private SkillController skillController;
-    private Skill skill;
 
     @BeforeEach
     void setUp() {
         skillRepository = mock(SkillRepository.class);
         skillController = new SkillController(skillRepository);
-        skill = new Skill("Java");
     }
 
     @Test
     public void testCreateTrue() {
+        Skill skill = new Skill("Java");
         when(skillRepository.save(any())).thenReturn(skill);
         assertSame(skill, skillController.create("Java"));
         verify(skillRepository).save(any());
@@ -40,12 +39,14 @@ public class SkillControllerTest {
 
     @Test
     public void testCreateFalse() {
+        Skill skill = new Skill("Java");
         when(skillRepository.save(any())).thenReturn(skill);
         assertFalse(skillController.create(any()) == null);
     }
 
     @Test
     public void testUpdateTrue() {
+        Skill skill = new Skill("Java");
         when(skillRepository.update(any())).thenReturn(skill);
         assertSame(skill, skillController.update(1, "Java"));
         verify(skillRepository).update(any());
@@ -54,6 +55,7 @@ public class SkillControllerTest {
 
     @Test
     public void testUpdateFalse() {
+        Skill skill = new Skill("Java");
         when(skillRepository.update(any())).thenReturn(skill);
         assertFalse(skillController.update(1, any()) == null);
     }
@@ -77,6 +79,7 @@ public class SkillControllerTest {
 
     @Test
     public void testGetByIdTrue() {
+        Skill skill = new Skill("Java");
         when(skillRepository.getById(any())).thenReturn(skill);
         assertSame(skill, skillController.getById(1));
         verify(skillRepository).getById(any());
@@ -85,6 +88,7 @@ public class SkillControllerTest {
 
     @Test
     public void testGetByIdFalse() {
+        Skill skill = new Skill("Java");
         when(skillRepository.getById(any())).thenReturn(skill);
         assertFalse(skillController.getById(1)  ==  null);
     }
